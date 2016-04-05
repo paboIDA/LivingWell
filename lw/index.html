@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Living Well App</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="./js/jspdf/jspdf.min.js"></script>
+    <script type="text/javascript" src="./js/jspdf/jspdf.js"></script>
+    <script type="text/javascript" src="./js/jspdf/debug.js"></script>
+    <script type="text/javascript" src="./js/jspdf/images.js"></script>
+    <script type="text/javascript" src="./js/jspdf/addimage.js"></script>
+    <script type="text/javascript" src="./js/jspdf/FileSaver.js"></script>
+    <script type="text/javascript" src="./js/jspdf/canvas.js"></script>
+    <script type="text/javascript" src="./js/jspdf/html2canvas.js"></script>
+    <script type="text/javascript" src="./js/jspdf/deflate.js"></script>
+    <script type="text/javascript" src="./js/jspdf/standard_fonts_metrics.js"></script>
+    <script type="text/javascript" src="./js/jspdf/split_text_to_size.js"></script>
+    <script type="text/javascript" src="./js/Blob.js"></script>
+    <script type="text/javascript" src="./js/jspdf/addhtml.js"></script>
+
+    <script type="text/javascript" src="./js/base64.js"></script>
+    <script type="text/javascript" src="./js/swfobject.js"></script>
+    <script type="text/javascript" src="./js/downloadify.min.js"></script>
+
+    <script type="text/javascript" async="" src="./js/color-thief.js"></script>
+
+    <script type="text/javascript" async="" src="./js/ga.js"></script>
+    <script src="./js/jquery-2.1.4.min.js"></script>
+    <script src="./js/jquery-ui.min.js"></script>
+    <script src="./js/jquery.ui.touch-punch.min.js"></script>
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/css/base/jquery.ui.all.css" rel="stylesheet">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/css/lightness/jquery-ui-1.10.2.custom.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/resources/demos/style.css">
+
+
+    <link href="./css/style.css" rel="stylesheet">
+    <!--[if lte IE 9]>
+  
+
+<style>
+.ignoreIE {display:none !important;}
+
+</style>
+
+<![endif]-->
+
+
+    <link href="./css/font-awesome.css" rel="stylesheet">
+    <!-----------------------------------------------------------------------------------------------Images to be dragged and droped----------------------------------------------------------------------------------------->
+
+
+
+    <script>
+
+// limit lines of text input
+        var keynum, lines = 1;
+
+        function limitLines(obj, e) {
+            // IE
+            if(window.event) {
+                keynum = e.keyCode;
+                // Netscape/Firefox/Opera
+            } else if(e.which) {
+                keynum = e.which;
+            }
+
+            if(keynum == 13) {
+                if(lines == obj.rows) {
+                    return false;
+                }else{
+                    lines++;
+                }
+            }
+        }
+
+
+        $(function () {
+            draggableenable();
+            droppableenable();
+        });
+
+        function appendtooriginal() {
+            $(this).find(".pic-draggable").appendTo("#modal_situations ul");
+        }
+
+        function draggableenable() {
+            var $pictures = $("#modal_situations"),
+                $situation = $(".pic-droppable"),
+                $strategies = $(".modal_strategies"),
+                $strategy = $(".strategy-droppable");
+
+            $("li", $pictures).draggable({
+                cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+                revert: "invalid", // when not dropped, the item will revert back to its initial position
+                containment: "document",
+                helper: "clone",
+                cursor: "move",
+                zIndex: 1000000000000,
+            });
+
+            $("li", $situation).draggable({
+                cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+                revert: "invalid", // when not dropped, the item will revert back to its initial position
+                containment: "document",
+                helper: "clone",
+                cursor: "move",
+                zIndex: 10000000000000000000,
+                start: function (event, ui) {
+                    $("#modal_situations").show();
+                }
+            });
+
+            $("li", $strategies).draggable({
+                cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+                revert: "invalid", // when not dropped, the item will revert back to its initial position
+                containment: "document",
+                helper: "clone",
+                cursor: "move",
+                zIndex: 1000000000,
+                start: function (event, ui) {
+                    $("#modal_strategies").show();
+                }
+            });
+
+            $("li", $strategy).draggable({
+                cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+                revert: "invalid", // when not dropped, the item will revert back to its initial position
+                containment: "document",
+                helper: "clone",
+                cursor: "move",
+                zIndex: 10000000000000000000,
+                start: function (event, ui) {
+                    $("#modal_strategies").show();
+                    $(this).parent().parent().find(".strategy_own").hide();
+                }
+            });
+
+        }
+
+        function droppableenable() {
+            var $pictures = $("#modal_situations"),
+                $situation = $(".testers"),
+                $strategies = $(".modal_strategies"),
+                $strategy = $(".strategy-droppable");
+
+            $situation.droppable({
+                accept: ".modal_situations li",
+                activeClass: "drop-highlight",
+                drop: function (event, ui) {
+                    $(this).find(".pic-draggable").remove();
+                    $(ui.draggable).clone().appendTo(this).addClass("pic-draggable_dropped");
+                    $("#modal_situations, #modal_strategies").hide();
+                    draggableenable();
+                }
+            });
+
+            $pictures.droppable({
+                accept: ".pic-draggable, .placeholder_pic",
+                drop: function (event, ui) {
+
+
+                    if ($(ui.draggable).hasClass('placeholder_pic')) {
+                        $(ui.draggable).find("img").attr('src', './img/white.jpg');
+
+                    } else if ($(ui.draggable).hasClass('pic-draggable_dropped')) {
+                        $(ui.draggable).remove();
+                    }
+                }
+            });
+
+            $strategy.droppable({
+                accept: ".modal_strategies li, .strategy-droppable li",
+                activeClass: "drop-highlight",
+                drop: function (event, ui) {
+                    $(this).find(".strategy-draggable").remove();
+
+                    $(ui.draggable).clone().appendTo(this);
+                    $("#modal_situations, #modal_strategies").hide();
+                    if ($(ui.draggable).hasClass('strategy_own_pic')) {
+                        $(this).find(".strategy_own").show();
+                        console.log('onReadyness');
+                    } else {
+                        $(this).find(".strategy_own").hide();
+                    }
+                    draggableenable();
+                }
+            });
+
+            $strategies.droppable({
+                accept: ".strategy-droppable li",
+                drop: function (event, ui) {
+                    $(ui.draggable).appendTo("#modal_strategies ul");
+
+                }
+            });
+
+
+
+        }
+    </script>
+    <!-----------------------------------------------------------------------------------------------Script to upload images using fileReader------------------------------------------------------------------------------------>
+
+    <script>
+        $(document).ready(function () {
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#imageupload1').attr('src', e.target.result);
+                        $('#imageupload1').parent().parent().find(".pic-draggable").remove();
+
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#takePictureField1").change(function () {
+                readURL(this);
+
+            });
+
+        });
+
+        $(document).ready(function () {
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#imageupload2').attr('src', e.target.result);
+                        $('#imageupload2').parent().parent().find(".pic-draggable").remove();
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#takePictureField2").change(function () {
+                readURL(this);
+            });
+
+        });
+
+
+        $(document).ready(function () {
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#imageupload3').attr('src', e.target.result);
+                        $('#imageupload3').parent().parent().find(".pic-draggable").remove();
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#takePictureField3").change(function () {
+                readURL(this);
+            });
+
+        });
+    </script>
+
+    <!--[if (IE)]>    												
+ <script>
+
+$(document).ready(function(){
+		$( ".pdf_save" ).find("p:last").text("Print session");
+		$( ".pdf_save" ).css("width", "200px");
+
+			
+		$( "#pdfhtml, .pdf_save" ).click(function() {
+				$("#page_wrapper").removeAttr('id').removeAttr('style').attr("id","page_wrapper_temp");
+				$(".container_frame").removeAttr('class').removeAttr('style').attr("class","container_temp");
+				$("#img_logo").attr("class","img_logo_temp");
+				$("#top_wrapper").attr("class","top_wrapper_temp");
+				$(".ignorepdf").hide();
+				$(".showpdf").show();
+				$(".bottom_arrow").hide();
+				$(".page").hide();
+				
+				window.print();
+				window.onfocus=function(){ exportRevert();}
+		});
+		
+		function exportRevert() {
+				$("#page_wrapper_temp").removeAttr('id').attr("id","page_wrapper");
+				$(".container_temp").removeAttr('class').attr("class","container_frame");
+				$(".ignorepdf").removeAttr('style');
+				$("#img_logo").removeAttr('class');
+				$("#top_wrapper").removeAttr('class');
+				$("#nav_controls").hide();
+				$(".showpdf").hide();
+				$(".session_line").hide();
+				$(".bottom_arrow").show();
+				$(".pdf_save").hide();
+				$(".nextpage_btn").show();
+				$(".page").show();
+		}
+		
+		
+		
+		});
+</script>		
+<![endif]-->
+
+    <!--[if !(IE)]><!-->
+
+
+    <!-----------------------------------------------------------------------------------------------PDF generator------------------------------------------------------------------------------------>
+
+
+
+    <script>
+        $(document).ready(function () {
+
+
+
+            $("#pdfhtml, .pdf_save").click(function () {
+                $("#page_wrapper").removeAttr('id').removeAttr('style').attr("id", "page_wrapper_temp");
+                $(".container_frame").removeAttr('class').removeAttr('style').attr("class", "container_temp");
+                $("#img_logo").attr("class", "img_logo_temp");
+                $("#top_wrapper").attr("class", "top_wrapper_temp");
+                $(".ignorepdf").hide();
+                $(".showpdf").show();
+                $(".bottom_arrow").hide();
+                $(".page").hide();
+                $(".nav_back_btn").hide();
+                $(".nav_back").hide();
+                $('#dialog').dialog({
+                    height: 550,
+                    width: 850,
+                    modal: true,
+                    resizable: false,
+                    dialogClass: 'no-close success-dialog'
+                });
+                exportPDF();
+
+            });
+
+            function exportRevert() {
+                $("#page_wrapper_temp").removeAttr('id').attr("id", "page_wrapper");
+                $(".container_temp").removeAttr('class').attr("class", "container_frame");
+                $(".ignorepdf").removeAttr('style');
+                $("#img_logo").removeAttr('class');
+                $("#top_wrapper").removeAttr('class');
+                $("#nav_controls").hide();
+                $(".showpdf").hide();
+                $(".session_line").hide();
+                $(".bottom_arrow").show();
+                $(".pdf_save").hide();
+                $(".nextpage_btn").show();
+                $(".page").show();
+
+
+
+
+            }
+
+            function exportPDF() {
+                $("#loading").show();
+                var doc = new jsPDF('p', 'px', 'a4');
+                doc.addHTML($('#container')[0], 5, 5, {
+                    'background': '#fff',
+                    'width': 1200,
+                }, function () {
+
+                    $("#loading").hide();
+
+                    if (navigator.userAgent.indexOf('iPad') == -1) {
+                        doc.save("LivingWellSession");
+                    } else
+                        doc.output('datauri'); {}
+                    $("#iframepdf").attr("src", doc.output('datauristring'));
+
+                    $('#pdfdownloadlink').click(function () {
+                        doc.save('liwingWellsession.pdf');
+                    });
+
+                    exportRevert();
+
+                });
+            }
+
+        });
+    </script>
+
+    <!--<![endif]-->
+
+    <!-----------------------------------------------------------------------------------------------Modals------------------------------------------------------------------------------------>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            $(".hide").click(function () {
+                $("#modal_situations, #modal_strategies, #modal_help, #modal_strategies_help").hide();
+            });
+            $(".show_situations").click(function () {
+                if ($("#modal_situations").is(':visible')) {
+                    $("#modal_situations").hide();
+                } else {
+                    $("#modal_strategies").hide();
+                    $("#modal_situations").show();
+                }
+            });
+            $(".show_strategies").click(function () {
+                if ($("#modal_strategies").is(':visible')) {
+                    $("#modal_strategies").hide();
+                } else {
+                    $("#modal_situations").hide();
+                    $("#modal_strategies").show();
+                }
+            });
+            $(".show_help").click(function () {
+                if ($("#modal_help").is(':visible')) {
+                    $("#modal_help").hide();
+                } else {
+                    $("#modal_help").show();
+                }
+            });
+            $(".help_strategies").click(function () {
+                if ($("#modal_strategies_help").is(':visible')) {
+                    $("#modal_strategies_help").hide();
+                } else {
+                    $("#modal_strategies_help").show();
+                    $("#modal_strategies").hide();
+                    $("#modal_situations").hide();
+                }
+            });
+            $("#begin_session").click(function () {
+                $(".modal_white, #modal_intro").hide();
+            });
+        });
+
+
+
+
+
+        $(document).ready(function () { //reload page button
+            $('#reload_btn').click(function () {
+                if (confirm("Are you sure? All changes will be deleted")) {
+                    $("#loading").show();
+                    location.reload();
+                    $("#loading").hide();
+                } else {
+                    e.preventDefault();
+                }
+            });
+        });
+
+
+        $(document).ready(function () { //Rate circles 
+            $(".rate_circle").click(function () {
+                $(this).parent().find(".rate_circle_chosen").toggleClass("rate_circle_chosen");
+                $(this).toggleClass("rate_circle_chosen");
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () { //counting the characters in the textfields. They cannot be extend hence the limit. 
+            $('.s_disrib').keyup(function () {
+                var max = 200;
+                var len = $(this).val().length;
+                if (len >= max) {
+                    var charleft = len - max;
+                    $(this).parent().find('.charNum').text(-charleft + '   You have reached the limit').css("color", "red");
+                } else {
+                    var char = max - len;
+                    $(this).parent().find('.charNum').text(char + ' characters left').css("color", "grey");
+                }
+            });
+
+            $('.s_implement').keyup(function () {
+                var max = 130;
+                var len = $(this).val().length;
+                if (len >= max) {
+                    var charleft = len - max;
+                    $(this).parent().find('.charNumStra').text(-charleft + '   you have reached the limit').css("color", "red");
+                } else {
+                    var char = max - len;
+                    $(this).parent().find('.charNumStra').text(char + ' characters left').css("color", "grey");
+                }
+            });
+
+            $('.other_select').hide(); //Selecting another option, which enables a textfield. 
+            $('.select_coop').on('change', this, function () {
+                if ($(this).val() == 'other') {
+                    $(this).parent().find('.other_select').show();
+                } else {
+                    $(this).parent().find('.other_select').hide();
+                }
+            });
+
+  //-----------------------------------------------------------------------------------------------NEXT PAGE NAVIGATION------------------------------------------------------------------------------------>
+
+
+            $('.nextpage_btn').click(function (event) {
+
+                if (event.preventDefault) {
+                    event.preventDefault();
+                } else {
+                    event.returnValue = false;
+                }
+                if ($('#page_wrapper').css("marginLeft") == '-3072px') {
+                    $('#page_wrapper').animate({
+                        marginLeft: "-=1024px"
+                    }, 0);
+                    $(this).hide();
+                    $(".pdf_save").show();
+                    $(".nav_back_btn").show();
+
+
+
+                } else if ($('#page_wrapper').css("marginLeft") == '-1024px') {
+                    $('#page_wrapper').animate({
+                        marginLeft: "-=1024px"
+                    }, 0);
+                    $(".nav_back_btn").show();
+                    $("#nav_controls").show();
+                } else {
+                    $('#page_wrapper').animate({
+                        marginLeft: "-=1024px"
+                    }, 0);
+                    $("#nav_controls").show();
+                    $(".nav_back").show();
+                    $(".modal_white, #modal_intro").hide();
+
+                }
+            });
+
+    //<!-----------------------------------------------------------------------------------------------BACK BUTTON NAVIGATION------------------------------------------------------------------------------------>
+
+
+
+            $('.nav_back').click(function (event) { //Navigation to go back. 
+                if (event.preventDefault) {
+                    event.preventDefault();
+                } else {
+                    event.returnValue = false;
+                }
+
+
+
+
+
+
+                if ($('#page_wrapper').css("marginLeft") == '-1024px') {
+                    $("#nav_controls").show();
+                    $(".nextpage_btn").show();
+                    $(".pdf_save").hide();
+                    $(".nav_back_button").show();
+
+
+
+
+
+                    $('#page_wrapper').animate({
+                        marginLeft: "+=1024px"
+
+                    }, 0);
+
+                    $(".bottom_arrow").show();
+                } else {
+                    $('#page_wrapper').animate({
+                        marginLeft: "+=1024px"
+                    }, 0);
+                    $("#nav_controls").show();
+                    $(".nextpage_btn").show();
+                    $(".pdf_save").hide();
+
+                }
+            });
+
+        });
+    </script>
+
+
+
+
+
+</head>
+
+        <!-----------------------------------------------------------------------------------------------TOP PART------------------------------------------------------------------------------------>
+
+
+<body>
+    <div class="modal_white"></div>
+    <div id="loading">
+        <!-- loading screen for generating PDF -->
+        <div class="imgload">
+            <h1>Creating the PDF</h1>
+            <img src="./img/loader.gif" style="width: 80px; height: 80px;">
+        </div>
+    </div>
+    <div id="container" class="container_frame">
+        <!-- Container -->
+        <div id="top_wrapper">
+            <img id="img_logo" src="./img/logo.jpg">
+            <h1 class="showpdf" style="width:50%;">LIVING WELL ONLINE</h1>
+            <div id="nav_controls" Class="ignorepdf" style="display:none;">
+                <!-- Top Navigation -->
+
+                <div class="nav_page">
+                    <a href="#" id="reload_btn">
+                        <div class="nav_save_btn nav_btn">
+                            <p style="margin-left:2px;"><i class="icon-refresh icon-large"></i></p>
+                        </div>
+                        <p>Reset session</p>
+                    </a>
+                </div>
+
+                <div class="nav_page">
+                    <a href="#" class="show_help">
+                        <div class="nav_btn">
+                            <p><i class="icon-question icon-large"></i></p>
+                        </div>
+                        <p>Help</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        
+        <!-----------------------------------------------------------------------------------------------PAGE 1------------------------------------------------------------------------------------>
+
+
+
+        <div id="page_wrapper">
+            <div class="page">
+
+                <div class="content_page">
+                    <div class="content">
+                        <h1 style="font-size: 250%;">Living Well</h1>
+
+                        <p style="font-size: 130%;">Welcome to the Ida Institute’s Living Well Online. Living Well is designed to help you find out where and when it is most important for you to communicate well.</p>
+                        <p style="font-size: 130%;">There are three steps to Living Well Online:</p>
+
+                        <ul class="firstpage" style="font-size: 130%;">
+                            <li><b>Step 1:</b> Identify where and when it is important for you to communicate well</li>
+
+                            <li><b>Step 2:</b> Explore new ways to communicate better</li>
+                            <li><b>Step 3:</b> Identify technology that can help you and plan your next steps</li>
+                        </ul>
+
+
+                        <p style="font-size: 130%;">You will describe 3 different comunication situations doing steps 1 and 2. </p>
+                        <p style="font-size: 130%;">Do the steps at home with someone close to you (such as your spouse) before your appointment. It is important that you do Living Well with someone else, who might have a different point of view.</p>
+                        <p style="font-size: 130%;">You can save your session to your home computer. Email the session to your audiologist, or print it out to bring to your appointment.</p>
+                    </div>
+                </div>
+            </div>
+
+
+
+           
+            <!-----------------------------------------------------------------------------------------------PAGE 2------------------------------------------------------------------------------------>
+
+
+            <div class="page">
+                <div class="content_page">
+                    <div class="content">
+                        <h1>Get Started</h1>
+                        <p style="font-size: 120%;"><strong>Step 1:</strong> </p>
+
+
+
+                        <ul style="font-size: 120%;">
+                            <li>Choose a photo that shows a situation that is important to you. You can upload your own photo, or choose one from our list. </li>
+
+                            <li>Describe the photo in the next box. How often are you in this situation? Why is it important for you to hear and communicate well here? </li>
+                            <li>Click on one of the circles marked Easy, Medium, or Hard next to the situation boxes.</li>
+                        </ul>
+
+                        <p style="font-size: 120%;"><strong>Step 2:</strong>
+                            <ul style="font-size: 120%;">
+                                <li>Plan how you will manage in the situation. Choose a strategy from the list. </li>
+                                <li>In the box marked “How will you do it,” say how and why you will use this technique.
+                                    <li>From the drop-down menu “Who will help you?” choose who will help you with this strategy.</li>
+
+                            </ul>
+                            <p style="font-size: 120%;"><strong>Step 3:</strong></p>
+                            <ul style="font-size: 120%;">
+                                <li> Email or print this session and bring it to your appointment. You will go over your session and decide on the solutions that are most helpful for you.</li>
+                            </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-----------------------------------------------------------------------------------------------SITUATION 1------------------------------------------------------------------------------------------------------------>
+
+            <div class="session" id="session1">
+                <h2 align="left">COMMUNICATION SITUATION 1</h2>
+                <div class="band1">
+                    <div class="situation_box">
+                        <div>
+                            <img src="img/button1.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span style="">Situation</span>
+                        </div>
+
+
+
+                        <!---------------------------------------------------------------------------------------------Situation DropBox 1------------------------------------------------------------------------------------------------------------>
+                        <div id="pic-droppable1" class="ui-droppable pic-droppable">
+
+                            <ul class="testers">
+                                <li class="placeholder_pic"><img class="yourimage" id="imageupload1" src="./img/white.jpg" /> </li>
+                            </ul>
+                            <div class="showupload">
+                                <button onclick="$('#takePictureField1').click();" class="btn ignorepdf ignoreIE" title="Click to upload your own photo"><i class="icon-picture"></i></button>
+                                <input type="file" capture="camera" accept="image/*" id="takePictureField1" style="position:absolute;left:-10000px;top:-10000px;">
+                                <button class="show_situations btn ignorepdf" title="Click to choose from existing photos"><i class="icon-th-list"></i></button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="textfield_discrib">
+                        <div>
+                            <img src="img/button2.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span>Describe the situation</span>
+                        </div>
+                        <!-- Situation description textfield -->
+                        <textarea rows="1" onkeydown="return limitLines(this, event)" maxlength="200" placeholder='Describe the situation here, e.g. "I have difficulties hearing in restaurant due to the background noise".' class="s_disrib"></textarea>
+                        <div class="charNum ignorepdf">200 characters left</div>
+                    </div>
+                    <div class="ranking">
+                        <!-----------------------------------------------------------------------------------------------Rating Circle 1------------------------------------------------------------------------------------------------------------>
+
+                        <div>
+                            <img src="img/button3.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span>How difficult is it to communicate in the situation?</span>
+                        </div>
+                        <div class="rating">
+                            <div style="background-color:green;" class="rate_circle"></div>
+                            <div style="background-color:yellow;" class="rate_circle"></div>
+                            <div style="background-color:red;" class="rate_circle"></div>
+                            <div class="rate_circle_label">Easy</div>
+                            <div class="rate_circle_label">Medium</div>
+                            <div class="rate_circle_label">Hard</div>
+                        </div>
+                        <div class="dropdown" style="margin-top:195px;height: 20px  ">
+                            <div style="padding-top: -200px;">
+                                <img src="img/button6.png" style="width:30px;height:30px;vertical-align:middle">
+                                <span style="">Who will help you?</span>
+                            </div>
+                            <!-- Who will help you -->
+                            <select class="select_coop" style="width: 100%; height: 40px;font-family: Gotham, sans-serif">
+
+                            <option value="" disabled selected>Choose from existing</option>
+                                <option value="friend">Friend</option>
+                                <option value="sibling">Sibling</option>
+                                <option value="spouse">Spouse</option>
+                                <option value="audiologist">Audiologist</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="other_select">
+                                <input type="text" name="other1" style="width: 96.5%; height: 35px; margin-top:5px; padding-left: 4px;" placeholder="Write here">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="band2">
+                    <div class="strategy_box">
+                        <div>
+                            <img src="img/button4.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span style="">Plan your communication</span>
+                        </div>
+                        <!-----------------------------------------------------------------------------------------------Communication strategy drop 1 ---------------------------------------------------------------------------------------------->
+
+                        <div id="strategy1-droppable" class="ui-droppable strategy-droppable">
+
+                            <ul>
+                                <li class="placeholder_pic2"> <img src="./img/planaheadeg.jpg" /> </li>
+                            </ul>
+
+                            <div id="strategy-own1" class="strategy_own">
+                                <input type="text" class="strategy_own_input" id="strategyname1" placeholder="Click here to write">
+
+                            </div>
+
+                            <div class="showupload">
+                                <button class="help_strategies btn ignorepdf" style="font-size: 16px;" title="Click here to read about the strategies">
+                                    <span class="icon-stack" style="vertical-align:-24%">
+											<i class="icon-question"></i>
+											<i class="icon-comment-alt icon-stack-base"></i>
+										</span>
+                                </button>
+                                <button class="show_strategies btn ignorepdf" title="Click here to select a strategy"><i class="icon-th-list"></i></button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="textfield_implement">
+                        <div>
+                            <img src="img/button5.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span style="">How will you do it?</span>
+                        </div>
+                        <!-- Communication strategy textfield -->
+                        <textarea rows="1" onkeydown="return limitLines(this, event)" maxlength="130" placeholder='Describe the strategy here, e.g. "Arrive a little early so you can position yourself in the best place".' class="s_implement"></textarea>
+                        <div class="charNumStra ignorepdf"><p>130 characters left</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <hr class="session_line showpdf">
+<!-----------------------------------------------------------------------------------------------SITUATION 2------------------------------------------------------------------------------------------------------------>
+            <div class="session" id="session2">
+                <h2 align="left">COMMUNICATION SITUATION 2</h2>
+                <div class="band1">
+                    <div class="situation_box">
+                        <div>
+                            <img src="img/button1.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span style="">Situation</span>
+                        </div>
+<!-----------------------------------------------------------------------------------------------Situation drop box 2------------------------------------------------------------------------------------------------------->
+
+                        <div id="pic-droppable2" class="ui-droppable pic-droppable">
+
+                            <ul class="testers">
+                                <li class="placeholder_pic"><img class="yourimage" id="imageupload2" src="./img/white.jpg" /></li>
+                            </ul>
+                            <div class="showupload">
+                                <button onclick="$('#takePictureField2').click();" class="btn ignorepdf ignoreIE" title="Click here to upload your own photo"><i class="icon-picture"></i></button>
+                                <input type="file" capture="camera" accept="image/*" id="takePictureField2" style="position:absolute;left:-10000px;top:-10000px;">
+                                <button class="show_situations btn ignorepdf" title="Click here to choose from existing photos"><i class="icon-th-list"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="textfield_discrib">
+                        <div>
+                            <img src="img/button2.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span style="">Describe the situation</span>
+                        </div>
+                        <!-- Situation description textfield -->
+                        <textarea rows="1" onkeydown="return limitLines(this, event)" maxlength="200" placeholder='Describe the situation here, e.g. "I have difficulties hearing in restaurant due to the background noise".' class="s_disrib"></textarea>
+                        <div class="charNum ignorepdf">200 characters left</div>
+                    </div>
+                    <div class="ranking">
+                        <div>
+                            <img src="img/button3.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span style="">How difficult is it to communicate in the situation?</span>
+                        </div>
+<!-----------------------------------------------------------------------------------------------Rating Circle 2------------------------------------------------------------------------------------------------------------>
+
+                        <div class="rating">
+
+                            <div style="background-color:green;" class="rate_circle"></div>
+                            <div style="background-color:yellow;" class="rate_circle"></div>
+                            <div style="background-color:red;" class="rate_circle"></div>
+                            <div class="rate_circle_label">Easy</div>
+                            <div class="rate_circle_label">Medium</div>
+                            <div class="rate_circle_label">Hard</div>
+                        </div>
+                        <div class="dropdown" style="margin-top:195px;height: 20px  ">
+
+                        <div>
+                                <img src="img/button6.png" style="width:30px;height:30px;vertical-align:middle">
+                                <span style="">Who will help you?</span>
+                            </div>
+                            <!-- Who will help you -->
+                            <select class="select_coop" style="width: 100%; height: 40px;font-family: Gotham, sans-serif">
+                                <option value="" disabled selected>Choose from existing</option>
+                                <option value="friend">Friend</option>
+                                <option value="sibling">Sibling</option>
+                                <option value="spouse">Spouse</option>
+                                <option value="audiologist">Audiologist</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="other_select">
+                                <input type="text" name="other1" style="width: 98.5%; height: 35px; margin-top:5px;" placeholder="Write here">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="band2">
+                    <div class="strategy_box">
+                        <div>
+                            <img src="img/button4.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span style="">Plan your communication</span>
+                        </div>
+                    
+ <!----------------------------------------------------------------------------------------------Communication strategy drop 2------------------------------------------------------------------------------------>
+
+
+                        <div id="strategy2-droppable" class="ui-droppable strategy-droppable">
+                            <ul>
+                                <li class="placeholder_pic2"><img src="./img/planaheadeg.jpg" /></li>
+                            </ul>
+                            <div id="strategy-own2" class="strategy_own">
+                                <input type="text" class="strategy_own_input" id="strategyname2" placeholder="Click here to write">
+
+                            </div>
+                            <div class="showupload">
+                                <button class="help_strategies btn ignorepdf" style="font-size: 16px;" title="Click here to read about the strategies">
+                                    <span class="icon-stack" style="vertical-align:-24%">
+											<i class="icon-question"></i>
+											<i class="icon-comment-alt icon-stack-base"></i>
+										</span>
+                                </button>
+                                <button class="show_strategies btn ignorepdf" title="Click here to select a strategy"><i class="icon-th-list"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="textfield_implement">
+                        <div>
+                            <img src="img/button5.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span style="">How will you do it?</span>
+                        </div>
+                        <!-- Communication strategy textfield -->
+                        <textarea rows="1" onkeydown="return limitLines(this, event)" maxlength="130" placeholder='Describe the strategy here, e.g. "Arrive a little early so you can position yourself in the best place".' class="s_implement"></textarea>
+                        <div class="charNumStra ignorepdf"><p>130 characters left</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <hr class="session_line showpdf">
+<!-----------------------------------------------------------------------------------------------SITUATION 3------------------------------------------------------------------------------------------------------------>
+            <div class="session" id="session3">
+                <h2 align="left">COMMUNICATION SITUATION 3</h2>
+                <div class="band1">
+                    <div class="situation_box">
+                        <div>
+                            <img src="img/button1.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span style="">Situation</span>
+                        </div>
+
+<!----------------------------------------------------------------------------------------Situation drop box 3 ------------------------------------------------------------------------------------------------------------->
+                        <div id="pic-droppable3" class="ui-droppable pic-droppable">
+
+                            <ul class="testers">
+                                <li class="placeholder_pic"><img class="yourimage" id="imageupload3" src="./img/white.jpg" /></li>
+                            </ul>
+                            <div class="showupload">
+                                <button onclick="$('#takePictureField3').click();" class="btn ignorepdf ignoreIE" title="Click here to upload your own photo"><i class="icon-picture"></i></button>
+                                <input type="file" capture="camera" accept="image/*" id="takePictureField3" style="position:absolute;left:-10000px;top:-10000px;">
+                                <button class="show_situations btn ignorepdf" title="Click here to choose from existing photos"><i class="icon-th-list"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="textfield_discrib">
+                        <div>
+                            <img src="img/button2.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span style="">Describe the situation</span>
+                        </div>
+                        <!-- Situation description textfield -->
+                        <textarea rows="1" onkeydown="return limitLines(this, event)" maxlength="200" placeholder='Describe the situation here, e.g. "I have difficulties hearing in restaurant due to the background noise".' class="s_disrib"></textarea>
+                        <div class="charNum ignorepdf">200 characters left</div>
+                    </div>
+                    <div class="ranking">
+                        <div>
+                            <img src="img/button3.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span style="">How difficult is it to communicate in the situation?</span>
+                        </div>
+
+
+ <!----------------------------------------------------------------------------------------------------Rating Circles3----------------------------------------------------------------------------------------------->
+                        <div class="rating">
+
+                            <div style="background-color:green;" class="rate_circle"></div>
+                            <div style="background-color:yellow;" class="rate_circle"></div>
+                            <div style="background-color:red;" class="rate_circle"></div>
+                            <div class="rate_circle_label">Easy</div>
+                            <div class="rate_circle_label">Medium</div>
+                            <div class="rate_circle_label">Hard</div>
+                        </div>
+                        <div class="dropdown" style="margin-top:195px;height: 20px  ">
+
+                        <div>
+                                <img src="img/button6.png" style="width:30px;height:30px;vertical-align:middle">
+                                <span style="">Who will help you?</span>
+                            </div>
+                            <!-- Who will help you -->
+                            <!-- Who will help you -->
+                            <select class="select_coop" style="width: 100%; height: 40px;font-family: Gotham, sans-serif">
+
+                            <option value="" disabled selected>Choose from existing</option>
+                                <option value="friend">Friend</option>
+                                <option value="sibling">Sibling</option>
+                                <option value="spouse">Spouse</option>
+                                <option value="audiologist">Audiologist</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="other_select">
+                                <input type="text" name="other1" style="width: 98.5%; height: 35px; margin-top:5px;" placeholder="Write here">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="band2">
+                    <div class="strategy_box">
+                        <div>
+                            <img src="img/button4.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span style="">Plan your communication</span>
+                        </div>
+<!---------------------------------------------------------------------------------------- Communication strategy drop3 -------------------------------------------------------------------------------------->
+                        <div id="strategy3-droppable" class="ui-droppable strategy-droppable">
+                            <ul>
+                                <li class="placeholder_pic2"><img src="./img/planaheadeg.jpg" /></li>
+                            </ul>
+                            <div id="strategy-own3" class="strategy_own">
+                                <input type="text" class="strategy_own_input" id="strategyname3" placeholder="Click here to write">
+                            </div>
+                            <div class="showupload">
+                                <button class="help_strategies btn ignorepdf" style="font-size: 16px;" title="Click here to read about the strategies">
+                                    <span class="icon-stack" style="vertical-align:-24%">
+											<i class="icon-question"></i>
+											<i class="icon-comment-alt icon-stack-base"></i>
+										</span>
+                                </button>
+                                <button class="show_strategies btn ignorepdf" title="Click here to select a strategy"><i class="icon-th-list"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="textfield_implement">
+                        <div>
+                            <img src="img/button5.png" style="width:30px;height:30px;vertical-align:middle">
+                            <span style="">How will you do it?</span>
+                        </div>
+                        <!-- Communication strategy textfield -->
+                        <textarea rows="1" onkeydown="return limitLines(this, event)" maxlength="130" placeholder='Describe the strategy here, e.g. "Arrive a little early so you can position yourself in the best place".' class="s_implement"></textarea>
+                        <div class="charNumStra ignorepdf"><p>130 characters left</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!---------------------------------------------------------------------------------------- Situation pictures pop up box 3 -------------------------------------------------------------------------------------->
+
+
+        <div id="modal_situations" class="modal_strategy_situation">
+            <img class="hide" src="./img/close.gif">
+            <div style="padding-left:130px;">
+                <span>Situations (drag and drop to the box to your left</span>
+                <img src="img/button1.png" style="width:30px;height:30px;vertical-align:middle">
+                <span>)</span>
+            </div>
+
+
+
+            <div class="modal_content">
+                <ul class="modal_situations">
+                    <li id="draggable1" class="ui-widget-content ui-draggable pic-draggable"><img style="width: 300px; height: 200px;" src="./img/situations/1_Communicating-in-noisy-environment.jpg"></li>
+                    <li id="draggable2" class="ui-widget-content ui-draggable pic-draggable"><img style="width: 300px; height: 200px;" src="./img/situations/2_Communicating-with-family.jpg"></li>
+                    <li id="draggable3" class="ui-widget-content ui-draggable pic-draggable"><img style="width: 300px; height: 200px;" src="./img/situations/3_Communicating-with-spouse.jpg"></li>
+                    <li id="draggable4" class="ui-widget-content ui-draggable pic-draggable"><img style="width: 300px; height: 200px;" src="./img/situations/4_Watching-the-television.jpg"></li>
+                    <li id="draggable5" class="ui-widget-content ui-draggable pic-draggable"><img style="width: 300px; height: 200px;" src="./img/situations/5_Communicating-over-the-phone.jpg"></li>
+                    <li id="draggable6" class="ui-widget-content ui-draggable pic-draggable"><img style="width: 300px; height: 200px;" src="./img/situations/6_Listening-in-church.jpg"></li>
+                    <li id="draggable7" class="ui-widget-content ui-draggable pic-draggable"><img style="width: 300px; height: 200px;" src="./img/situations/7_Communicating-in-meeting,professional-events.jpg"></li>
+                    <li id="draggable8" class="ui-widget-content ui-draggable pic-draggable"><img style="width: 300px; height: 200px;" src="./img/situations/8_Watching-a-movie-in-cinema.jpg"></li>
+                    <li id="draggable9" class="ui-widget-content ui-draggable pic-draggable"><img style="width: 300px; height: 200px;" src="./img/situations/9_Communicating-in-car.jpg"></li>
+                    <li id="draggable10" class="ui-widget-content ui-draggable pic-draggable"><img style="width: 300px; height: 200px;" src="./img/situations/10_Shopping.jpg"></li>
+                </ul>
+            </div>
+        </div>
+
+
+<!---------------------------------------------------------------------------------------- Situation strategies pop up box 3 -------------------------------------------------------------------------------------->
+
+        <div id="modal_strategies" class="modal_strategy_situation">
+            <img class="hide" src="./img/close.gif">
+
+            <div style="padding-left:120px;">
+                <span>Strategies (drag and drop to the box to your left</span>
+                <img src="img/button4.png" style="width:30px;height:30px;vertical-align:middle">
+            </div>
+
+            <div class="modal_content">
+                <ul class="modal_strategies">
+                    <li id="strategy0" class="ui-widget-content ui-draggable strategy-draggable strategy-img strategy_own_pic"><img style="width: 300px; height: 134px;" src="./img/strategies/strategy0.jpg"></li>
+                    <li id="strategy2" class="ui-widget-content ui-draggable strategy-draggable strategy-img">
+                        <a href="#"><img style="width: 300px; height: 134px;" src="./img/strategies/strategy2.jpg"></a>
+                    </li>
+                    <li id="strategy4" class="ui-widget-content ui-draggable strategy-draggable strategy-img">
+                        <a href="#"><img style="width: 300px; height: 134px;" src="./img/strategies/strategy4.jpg"></a>
+                    </li>
+                    <li id="strategy5" class="ui-widget-content ui-draggable strategy-draggable strategy-img">
+                        <a href="#"><img style="width: 300px; height: 134px;" src="./img/strategies/strategy5.jpg"></a>
+                    </li>
+                    <li id="strategy6" class="ui-widget-content ui-draggable strategy-draggable strategy-img">
+                        <a href="#"><img style="width: 300px; height: 134px;" src="./img/strategies/strategy6.jpg"></a>
+                    </li>
+                    <li id="strategy7" class="ui-widget-content ui-draggable strategy-draggable strategy-img">
+                        <a href="#"><img style="width: 300px; height: 134px;" src="./img/strategies/strategy7.jpg"></a>
+                    </li>
+                    <li id="strategy9" class="ui-widget-content ui-draggable strategy-draggable strategy-img">
+                        <a href="#"><img style="width: 300px; height: 134px;" src="./img/strategies/strategy9.jpg"></a>
+                    </li>
+                    <li id="strategy12" class="ui-widget-content ui-draggable strategy-draggable strategy-img">
+                        <a href="#"><img style="width: 300px; height: 134px;" src="./img/strategies/strategy12.jpg"></a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <!-----------------------------------------------------------------------------Thank you page------------------------------------------------------------------------------------------------------------>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!----------------------------------------------------------------------------- help pop up box ------------------------------------------------------------------------------------------------------------------------>
+        <div id="modal_help" class="modal_center">
+            <img class="hide" src="./img/close.gif">
+
+            <h1 style="margin-left:15px;">HELP</h1>
+            <div class="modal_content">
+                <h1>Get Started</h1>
+                <p><strong>Step 1:</strong> </p>
+
+
+
+                <ul style="font-size: 130%;">
+                    <li>Choose a photo that shows a situation that is important to you. You can upload your own photo, or choose one from our list. </li>
+
+                    <li>Describe the photo in the next box. How often are you in this situation? Why is it important for you to hear and communicate well here? </li>
+                    <li>Click on one of the circles marked Easy, Medium, or Hard next to the situation boxes.</li>
+                </ul>
+
+                <p><strong>Step 2:</strong>
+                    <ul style="font-size: 130%;">
+                        <li>Plan how you will manage in the situation. Choose a strategy from the list. </li>
+                        <li>In the box marked “How will you do it,” say how and why you will use this technique.
+                            <li>From the drop-down menu “Who will help you?” choose who will help you with this strategy.</li>
+
+                    </ul>
+                    <p><strong>Step 3:</strong></p>
+                    <ul style="font-size: 130%;">
+                        <li> Email or print this session and bring it to your appointment. You will go over your session and decide on the solutions that are most helpful for you.</li>
+                    </ul>
+                    <p>If you are having problems using the site, please email Ida Institute Web Editor <a href="mailto:amco@idainstitute.dk" target="_top">Amanda Farah Cox</a>.</p>
+
+            </div>
+        </div>
+        <div id="modal_strategies_help" class="modal_center">
+            <!-- Strategies help descriptions pop up box -->
+            <img class="hide" src="./img/close.gif">
+
+            <h1 style="margin-left:15px;">Living Well Online Quick Sheet of Communication Strategies</h1>
+            <div class="modal_content">
+
+                <div class="strategies_help_bind">
+                    <div id="strategies_left_modal" class="strategies_column">
+                        <img src="./img/strategies/strategy6.jpg">
+                        <p>If you do not understand a message, ask the other person to repeat or rephrase. You should try to limit the number of times you ask a person to repeat as this will frustrate them. Asking people to rephrase is often more helpful than asking them to repeat the same thing over and over again.</p>
+                    </div>
+                    <div class="strategies_column">
+                        <img src="./img/strategies/strategy9.jpg">
+                        <p>If you have understood part of the conversation, only ask for the part you misunderstood to be repeated. Remember to tell the other person the part of the conversation you did understand, so they only need to repeat the part you didn’t understand.</p>
+                    </div>
+                    <div class="strategies_column">
+                        <img src="./img/strategies/strategy4.jpg">
+                        <p>Think about the communication situation ahead of time. Will there be a lot of background noise? Is there one person in particular you want to communicate with? Make a strategy for how you will manage the sitaution before you get there.</p>
+                    </div>
+                </div>
+
+                <div class="strategies_help_bind">
+                    <div class="strategies_column">
+                        <img src="./img/strategies/strategy2.jpg">
+                        <p>When attending events, position yourself in the best place for communication. Make sure to face the speaker. Sit at the head or foot of the table. This provides the best view of others. If hearing is better for one ear, keep your good ear facing the speaker.</p>
+                    </div>
+                    <div class="strategies_column">
+                        <img src="./img/strategies/strategy12.jpg">
+                        <p>Ask your communication partner to face you when they are speaking. Ask others to speak a little more slowly. This makes speech easier to understand.</p>
+                    </div>
+                    <div class="strategies_column">
+                        <img src="./img/strategies/strategy5.jpg">
+                        <p>Tell others that you have a hearing loss and explain the difficulties you have. Ask them to define the topic and try to suggest ways that they can help improve communication.</p>
+                    </div>
+                </div>
+
+                <div class="strategies_help_bind">
+                    <div class="strategies_column">
+                        <img src="./img/strategies/strategy7.jpg">
+                        <P>Try to reduce background noise by closing doors or windows if possible.</P>
+                    </div>
+
+
+                </div>
+
+                <div class="strategies_help_bind">
+
+                </div>
+            </div>
+        </div>
+        <div id="modal_pdf" class="modal_center">
+            <img class="hide" src="./img/close.gif">
+            <h1>PDF</h1>
+            <div class="modal_content">
+                <iframe type="application/pdf" id="iframepdf" style="width: 80%; height: 100%;"></iframe>
+                <p><a id="pdfdownloadlink" href="#">Download PDF</a></p>
+                <p><a id="pdfmaillink" href="#">Email PDF</a></p>
+            </div>
+        </div>
+        <div id="modal_intro">
+            <!-- Quick introduction pop up box -->
+            <h1 style="text-align=center">Quick introduction</h1>
+            <p>Complete the steps in the following order</p>
+            <img src="images/background.jpg" alt="Tutorial" style="width:904px;height:400px;">
+            <div style="background-color: #e63e4d; margin: 0 auto; width: 20%; text-align: center; height: 25px;" id="begin_session">
+                <p>Begin</p>
+            </div>
+
+
+
+<!------------------------------------------------------------------ Botom Navigation -------------------------------------------------------------------------------------------------------------------------------->
+        </div>
+        <div class="bottom back">
+            <div class="nav_back" style="display: none">
+                <div class="nav_back_btn">
+                    <p><</p>
+                </div>
+
+            </div>
+            <div class="bottom_arrow">
+                <!-- Bottom arrow -->
+                <div style="background-color: #e63e4d;" class="nextpage_btn">
+                    <p>></p>
+                </div>
+                <div class="pdf_save" style="display:none;">
+                    <!-- Bottom PDF save -->
+                    <div style="background-color: #e63e4d; " class="pdfpage_btn">
+                        <p><i class="icon-file-text"></i></p>
+                    </div>
+                    <p style="font-align:right;font-size: 130%;font-family: Gothambold, sans-serif;">Download-></p>
+                </div>
+            </div>
+            <div class="spacer"></div>
+
+        </div>
+    </div>
+</body>
+
+<div id="success" title="Ida Institute"  >
+    <div id="dialog" style="display: none;padding-top: 100px;"  > <p>Thank for using Living Well!</p>
+        <p>To return to Ida Telecare,</p>
+        <div><a href="http://idainstitute.com/toolbox/telecare/" style="text-decoration-color: #E63E4D">click here</a></div>
+
+    </div>
+</div>
+</html>
