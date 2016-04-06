@@ -144,8 +144,10 @@
 		} 
 		.bottomsession { 
 		overflow: auto;
-		} 
-		
+		}
+	    div.boxoftext{
+		height: 35px
+	     }
 		.nav_page{ 
 		margin-right: 30px;
 		width: 155px;

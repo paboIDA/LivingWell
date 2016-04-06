@@ -621,7 +621,7 @@ $(document).ready(function(){
             <div id="nav_controls" Class="ignorepdf" style="display:none;">
                 <!-- Top Navigation -->
 
-                <div class="nav_page">
+                <div class="nav_page" style="padding-left: 20px">
                     <a href="#" id="reload_btn">
                         <div class="nav_save_btn nav_btn">
                             <p style="margin-left:2px;"><i class="icon-refresh icon-large"></i></p>
@@ -675,31 +675,12 @@ $(document).ready(function(){
 
             <div class="page">
                 <div class="content_page">
-                    <div class="content">
-                        <h1>Get Started</h1>
-                        <p style="font-size: 120%;"><strong>Step 1:</strong> </p>
 
+                        <div align="center" style="padding-top: 30px;">
+                            <p style="font-size: 150%;text-align: center"><strong>Step By Step Video Guide</strong></p>
+                            <iframe src="https://player.vimeo.com/video/161602270" width="70%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        </div>
 
-
-                        <ul style="font-size: 120%;">
-                            <li>Choose a photo that shows a situation that is important to you. You can upload your own photo, or choose one from our list. </li>
-
-                            <li>Describe the photo in the next box. How often are you in this situation? Why is it important for you to hear and communicate well here? </li>
-                            <li>Click on one of the circles marked Easy, Medium, or Hard next to the situation boxes.</li>
-                        </ul>
-
-                        <p style="font-size: 120%;"><strong>Step 2:</strong>
-                            <ul style="font-size: 120%;">
-                                <li>Plan how you will manage in the situation. Choose a strategy from the list. </li>
-                                <li>In the box marked “How will you do it,” say how and why you will use this technique.
-                                    <li>From the drop-down menu “Who will help you?” choose who will help you with this strategy.</li>
-
-                            </ul>
-                            <p style="font-size: 120%;"><strong>Step 3:</strong></p>
-                            <ul style="font-size: 120%;">
-                                <li> Email or print this session and bring it to your appointment. You will go over your session with your audiologist and decide on the solutions that are most helpful for you.</li>
-                            </ul>
-                    </div>
                 </div>
             </div>
 
@@ -709,8 +690,8 @@ $(document).ready(function(){
             <div class="session" id="session1">
                 <h2 align="left">COMMUNICATION SITUATION 1</h2>
                 <div class="band1">
-                    <div class="situation_box">
-                        <div>
+                    <div class="situation_box" style="height: 140px">
+                        <div class="boxoftext">
                             <img src="img/button1.png" style="width:30px;height:30px;vertical-align:middle">
                             <span style="">Situation</span>
                         </div>
@@ -732,7 +713,7 @@ $(document).ready(function(){
                         </div>
                     </div>
                     <div class="textfield_discrib">
-                        <div>
+                        <div class="boxoftext">
                             <img src="img/button2.png" style="width:30px;height:30px;vertical-align:middle">
                             <span>Describe the situation</span>
                         </div>
@@ -743,9 +724,9 @@ $(document).ready(function(){
                     <div class="ranking">
                         <!-----------------------------------------------------------------------------------------------Rating Circle 1------------------------------------------------------------------------------------------------------------>
 
-                        <div>
+                        <div class="boxoftext">
                             <img src="img/button3.png" style="width:30px;height:30px;vertical-align:middle">
-                            <span>How difficult is it to communicate in the situation?</span>
+                            <span>Rate the situation</span>
                         </div>
                         <div class="rating">
                             <div style="background-color:green;" class="rate_circle"></div>
@@ -756,7 +737,7 @@ $(document).ready(function(){
                             <div class="rate_circle_label">Hard</div>
                         </div>
                         <div class="dropdown" style="margin-top:195px;height: 20px  ">
-                            <div style="padding-top: -200px;">
+                            <div class="boxoftext">
                                 <img src="img/button6.png" style="width:30px;height:30px;vertical-align:middle">
                                 <span style="">Who will help you?</span>
                             </div>
@@ -778,7 +759,7 @@ $(document).ready(function(){
                 </div>
                 <div class="band2">
                     <div class="strategy_box">
-                        <div>
+                        <div class="boxoftext">
                             <img src="img/button4.png" style="width:30px;height:30px;vertical-align:middle">
                             <span style="">Plan your communication</span>
                         </div>
@@ -808,7 +789,7 @@ $(document).ready(function(){
                         </div>
                     </div>
                     <div class="textfield_implement">
-                        <div>
+                        <div class="boxoftext">
                             <img src="img/button5.png" style="width:30px;height:30px;vertical-align:middle">
                             <span style="">How will you do it?</span>
                         </div>
@@ -826,7 +807,7 @@ $(document).ready(function(){
                 <h2 align="left">COMMUNICATION SITUATION 2</h2>
                 <div class="band1">
                     <div class="situation_box">
-                        <div>
+                        <div class="boxoftext">
                             <img src="img/button1.png" style="width:30px;height:30px;vertical-align:middle">
                             <span style="">Situation</span>
                         </div>
@@ -845,7 +826,7 @@ $(document).ready(function(){
                         </div>
                     </div>
                     <div class="textfield_discrib">
-                        <div>
+                        <div class="boxoftext">
                             <img src="img/button2.png" style="width:30px;height:30px;vertical-align:middle">
                             <span style="">Describe the situation</span>
                         </div>
@@ -854,9 +835,9 @@ $(document).ready(function(){
                         <div class="charNum ignorepdf">200 characters left</div>
                     </div>
                     <div class="ranking">
-                        <div>
+                        <div class="boxoftext">
                             <img src="img/button3.png" style="width:30px;height:30px;vertical-align:middle">
-                            <span style="">How difficult is it to communicate in the situation?</span>
+                            <span style="">Rate the situation</span>
                         </div>
 <!-----------------------------------------------------------------------------------------------Rating Circle 2------------------------------------------------------------------------------------------------------------>
 
@@ -871,10 +852,10 @@ $(document).ready(function(){
                         </div>
                         <div class="dropdown" style="margin-top:195px;height: 20px  ">
 
-                        <div>
+                        <div class="boxoftext">
                                 <img src="img/button6.png" style="width:30px;height:30px;vertical-align:middle">
                                 <span style="">Who will help you?</span>
-                            </div>
+                            </div >
                             <!-- Who will help you -->
                             <select class="select_coop" style="width: 100%; height: 40px;font-family: Gotham, sans-serif">
                                 <option value="" disabled selected>Choose from existing</option>
@@ -892,7 +873,7 @@ $(document).ready(function(){
                 </div>
                 <div class="band2">
                     <div class="strategy_box">
-                        <div>
+                        <div class="boxoftext">
                             <img src="img/button4.png" style="width:30px;height:30px;vertical-align:middle">
                             <span style="">Plan your communication</span>
                         </div>
@@ -920,7 +901,7 @@ $(document).ready(function(){
                         </div>
                     </div>
                     <div class="textfield_implement">
-                        <div>
+                        <div class="boxoftext">
                             <img src="img/button5.png" style="width:30px;height:30px;vertical-align:middle">
                             <span style="">How will you do it?</span>
                         </div>
@@ -938,7 +919,7 @@ $(document).ready(function(){
                 <h2 align="left">COMMUNICATION SITUATION 3</h2>
                 <div class="band1">
                     <div class="situation_box">
-                        <div>
+                        <div class="boxoftext">
                             <img src="img/button1.png" style="width:30px;height:30px;vertical-align:middle">
                             <span style="">Situation</span>
                         </div>
@@ -957,7 +938,7 @@ $(document).ready(function(){
                         </div>
                     </div>
                     <div class="textfield_discrib">
-                        <div>
+                        <div class="boxoftext">
                             <img src="img/button2.png" style="width:30px;height:30px;vertical-align:middle">
                             <span style="">Describe the situation</span>
                         </div>
@@ -966,9 +947,9 @@ $(document).ready(function(){
                         <div class="charNum ignorepdf">200 characters left</div>
                     </div>
                     <div class="ranking">
-                        <div>
+                        <div class="boxoftext">
                             <img src="img/button3.png" style="width:30px;height:30px;vertical-align:middle">
-                            <span style="">How difficult is it to communicate in the situation?</span>
+                            <span style="">Rate the situation</span>
                         </div>
 
 
@@ -984,7 +965,7 @@ $(document).ready(function(){
                         </div>
                         <div class="dropdown" style="margin-top:195px;height: 20px  ">
 
-                        <div>
+                        <div class="boxoftext">
                                 <img src="img/button6.png" style="width:30px;height:30px;vertical-align:middle">
                                 <span style="">Who will help you?</span>
                             </div>
@@ -1007,7 +988,7 @@ $(document).ready(function(){
                 </div>
                 <div class="band2">
                     <div class="strategy_box">
-                        <div>
+                        <div class="boxoftext">
                             <img src="img/button4.png" style="width:30px;height:30px;vertical-align:middle">
                             <span style="">Plan your communication</span>
                         </div>
@@ -1031,7 +1012,7 @@ $(document).ready(function(){
                         </div>
                     </div>
                     <div class="textfield_implement">
-                        <div>
+                        <div class="boxoftext">
                             <img src="img/button5.png" style="width:30px;height:30px;vertical-align:middle">
                             <span style="">How will you do it?</span>
                         </div>
@@ -1077,7 +1058,7 @@ $(document).ready(function(){
         <div id="modal_strategies" class="modal_strategy_situation">
             <img class="hide" src="./img/close.gif">
 
-            <div style="padding-left:120px;">
+            <div style="padding-left:120px;" >
                 <span>Strategies (drag and drop to the box to your left</span>
                 <img src="img/button4.png" style="width:30px;height:30px;vertical-align:middle">
             </div>
